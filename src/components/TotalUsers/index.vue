@@ -10,10 +10,10 @@
       <template v-slot:footer>
         <div class="total-users-footer">
           <span>日同比</span>
-          <span class="emphasis">{{userGrowthLastDay}}</span>
+          <span class="emphasis">{{userGrowthLastDay}}%</span>
           <div class="increase" />
           <span class="month">月同比</span>
-          <span class="emphasis">{{userGrowthLastMonth}}</span>
+          <span class="emphasis">{{userGrowthLastMonth}}%</span>
           <div class="decrease" />
         </div>
       </template>

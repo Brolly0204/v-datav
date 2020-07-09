@@ -55,8 +55,10 @@
 </template>
 
 <script>
+import commonDataMixin from '@/mixins/commonDataMixin'
 
 export default {
+  mixins: [commonDataMixin],
   data () {
     return {
       activeIndex: '1',
@@ -93,9 +95,32 @@ export default {
           }
         ]
       },
-      chartOptions: {
+      chartOptions: {}
+    }
+  },
+  computed: {
+    rankData () {
+      return this.activeIndex === '1' ? this.orderRank : this.userRank
+    }
+  },
+  watch: {
+    orderFullYear: {
+      handler (value) {
+        this.renderChart(value, this.orderFullYearAxis, '年度销售额')
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    onMenuSelect (index) {
+      this.activeIndex = index
+      index === '1' ? this.renderChart(this.orderFullYear, this.orderFullYearAxis, '年度销售额')
+        : this.renderChart(this.userFullYear, this.userFullYearAxis, '年度用户访问量')
+    },
+    renderChart (data, axis, title) {
+      this.chartOptions = {
         title: {
-          text: '年度销售业绩数据',
+          text: title,
           textStyle: {
             fontSize: 12,
             color: '#666'
@@ -103,6 +128,7 @@ export default {
           left: 25,
           top: 20
         },
+        tooltip: {},
         xAxis: {
           type: 'category',
           axisLabel: {
@@ -119,7 +145,7 @@ export default {
             },
             alignWithLabel: true
           },
-          data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+          data: axis
         },
         yAxis: {
           axisLine: { // 轴线
@@ -137,9 +163,10 @@ export default {
         },
         series: [
           {
+            name: title,
             type: 'bar',
             barWidth: '30%',
-            data: [200, 180, 300, 280, 250, 150, 260, 230, 170, 160, 320, 265]
+            data
           }
         ],
         color: ['#3398DB'],
@@ -149,50 +176,7 @@ export default {
           top: 70,
           bottom: 50
         }
-      },
-      rankData: [
-        {
-          no: 1,
-          name: '肯德基',
-          money: '323,234'
-        },
-        {
-          no: 2,
-          name: '肯德基',
-          money: '323,234'
-        },
-        {
-          no: 3,
-          name: '肯德基',
-          money: '323,234'
-        },
-        {
-          no: 4,
-          name: '肯德基',
-          money: '323,234'
-        },
-        {
-          no: 5,
-          name: '肯德基',
-          money: '323,234'
-        },
-        {
-          no: 6,
-          name: '肯德基',
-          money: '323,234'
-        },
-        {
-          no: 7,
-          name: '肯德基',
-          money: '323,234'
-        }
-      ]
-    }
-  },
-  methods: {
-    onMenuSelect (index) {
-      this.activeIndex = index
-      console.log(this.activeIndex)
+      }
     }
   }
 }

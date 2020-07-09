@@ -24,8 +24,25 @@ const wrapperArray = (o, k) => {
   return o && o[k] ? o[k] : []
 }
 
+const wrapperObject = (o, k) => {
+  if (o && k.indexOf('.') > 0) {
+    const keys = k.split('.')
+    keys.forEach(key => {
+      o = o[key]
+    })
+    return o || {}
+  } else {
+    return o && o[k] ? o[k] : {}
+  }
+}
+
 export default {
-  inject: ['getReportData'],
+  inject: ['getReportData', 'getWordCloud', 'getMapData'],
+  filters: {
+    format (v) {
+      return format(v)
+    }
+  },
   computed: {
     reportData () {
       return this.getReportData()
@@ -67,16 +84,46 @@ export default {
       return wrapperNumber(this.reportData, 'userToday')
     },
     userGrowthLastDay () {
-      return wrapperPercentage(this.reportData, 'userGrowthLastDay')
+      return wrapperNumber(this.reportData, 'userGrowthLastDay')
     },
     userGrowthLastMonth () {
-      return wrapperPercentage(this.reportData, 'userGrowthLastMonth')
+      return wrapperNumber(this.reportData, 'userGrowthLastMonth')
     },
     userLastMonth () {
       return wrapperOriginalNumber(this.reportData, 'userLastMonth')
     },
     userTodayNumber () {
       return wrapperOriginalNumber(this.reportData, 'userToday')
+    },
+    userFullYear () {
+      return wrapperArray(this.reportData, 'userFullYear')
+    },
+    userFullYearAxis () {
+      return wrapperArray(this.reportData, 'userFullYearAxis')
+    },
+    userRank () {
+      return wrapperArray(this.reportData, 'userRank')
+    },
+    orderFullYear () {
+      return wrapperArray(this.reportData, 'orderFullYear')
+    },
+    orderFullYearAxis () {
+      return wrapperArray(this.reportData, 'orderFullYearAxis')
+    },
+    orderRank () {
+      return wrapperArray(this.reportData, 'orderRank')
+    },
+    category1 () {
+      return wrapperObject(this.reportData, 'category.data1')
+    },
+    category2 () {
+      return wrapperObject(this.reportData, 'category.data2')
+    },
+    wordCloud () {
+      return this.getWordCloud()
+    },
+    mapData () {
+      return this.getMapData()
     }
   }
 }
