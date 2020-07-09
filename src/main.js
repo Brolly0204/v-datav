@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import './plugins/element.js'
+import './plugins/vueCharts'
+import './plugins/vCharts'
+import './style/index.css'
+import './plugins/axios'
 
 Vue.config.productionTip = false
 
